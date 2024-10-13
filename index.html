@@ -148,6 +148,80 @@
 
 </head>
 <body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pause and Resume Game</title>
+    <style>
+        canvas {
+            background-color: #f0f0f0;
+            display: block;
+            margin: 0 auto;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="400" height="400"></canvas>
+<div class="controls">
+    <button id="pauseButton">Pause</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPaused = false;
+    let x = 50;
+    let y = 50;
+    let dx = 2;
+    let dy = 2;
     
+    function drawBall() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2); // Draw the ball
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+
+        if (x + dx > canvas.width - 20 || x + dx < 20) {
+            dx = -dx;
+        }
+        if (y + dy > canvas.height - 20 || y + dy < 20) {
+            dy = -dy;
+        }
+
+        x += dx;
+        y += dy;
+    }
+
+    function gameLoop() {
+        if (!isPaused) {
+            drawBall();
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    document.getElementById('pauseButton').addEventListener('click', function() {
+        isPaused = !isPaused;
+        this.textContent = isPaused ? 'Resume' : 'Pause';
+    });
+
+    gameLoop();
+</script>
+
+</body>
+</html>
+
 </body>
 </html>
